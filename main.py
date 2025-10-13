@@ -5,10 +5,6 @@ from tkinter import filedialog
 from reader import ingest_dates
 from writer import WriterConfig, writer
 
-duty_year = 2025
-duty_month = 4
-public_holidays = [18]
-
 window = Tk()
 window.title("Duty Planner")
 
@@ -61,9 +57,15 @@ def run_writer():
     file_name = output_file_name.get()
     file_name = file_name if file_name.endswith(".xlsx") else file_name + ".xlsx"
 
+    duty_year = int(duty_year_entry.get())
+    duty_month = int(duty_month_entry.get())
+
+    # ph = list(map(lambda x: int(x), public_holidays.get().split(",")))
+    ph = [int(x) for x in public_holidays_entry.get().split(",")]
+
     writer_config = WriterConfig(output_path=output_path.get(), output_file_name=file_name,
                                  duty_year=duty_year,
-                                 duty_month=duty_month, public_holidays=public_holidays,
+                                 duty_month=duty_month, public_holidays=ph,
                                  show_individual_blocked_pct=bool(show_individual_blocked_pct.get()))
 
     writer(duty_personnel, writer_config)
@@ -84,12 +86,24 @@ output_file_name_label.grid(row=3, column=1, sticky="nsew")
 output_file_name = Entry(window)
 output_file_name.grid(row=3, column=2, sticky="nsew")
 
+duty_year_label = Label(window, text="Duty month/year")
+duty_year_label.grid(row=4, column=1, sticky="nsew")
+duty_month_entry = Entry(window)
+duty_month_entry.grid(row=4, column=2, sticky="nsew")
+duty_year_entry = Entry(window)
+duty_year_entry.grid(row=4, column=3, sticky="nsew")
+
+public_holidays_label = Label(window, text="Public holidays")
+public_holidays_label.grid(row=5, column=1, sticky="nsew")
+public_holidays_entry = Entry(window)
+public_holidays_entry.grid(row=5, column=2, sticky="nsew")
+
 show_each_blocked_label = Label(window, text="Show individual blocked?")
-show_each_blocked_label.grid(row=4, column=1, sticky="nsew")
+show_each_blocked_label.grid(row=6, column=1, sticky="nsew")
 show_each_blocked = Checkbutton(window, onvalue=1, offvalue=0, variable=show_individual_blocked_pct)
-show_each_blocked.grid(row=4, column=2, sticky="nsew")
+show_each_blocked.grid(row=6, column=2, sticky="nsew")
 
 generate_file = Button(window, text="Generate", command=run_writer)
-generate_file.grid(row=5, column=1, sticky="nsew")
+generate_file.grid(row=7, column=1, sticky="nsew")
 
 window.mainloop()
