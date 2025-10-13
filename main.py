@@ -1,5 +1,4 @@
 import os
-from tkinter import *
 
 from reader import ingest_dates
 from writer import WriterConfig, writer
@@ -35,15 +34,5 @@ for file_path in dir_files:
 writer_config = WriterConfig(output_path=output_path, output_file_name=output_file_name, duty_year=duty_year,
                              duty_month=duty_month, public_holidays=public_holidays,
                              show_individual_blocked_pct=show_individual_blocked_pct)
-
-# root = Tk()
-#
-# root.title("Duty Planner")
-# root.geometry("500x400")
-#
-# label = Label(root, text="testing")
-# label.pack()
-#
-# root.mainloop()
 
 writer(duty_personnel, writer_config)
